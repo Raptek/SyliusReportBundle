@@ -37,7 +37,8 @@ class ReportController extends ResourceController
 
         $report = $this->findOr404($configuration);
 
-        $formType = $report->getDataFetcher();
+        $dataFetcher = $this->get($report->getDataFetcher());
+        $formType = $dataFetcher->getType();
         $configurationForm = $this->container->get('form.factory')->createNamed(
             'configuration',
             $formType,
@@ -45,7 +46,7 @@ class ReportController extends ResourceController
         );
 
         if ($request->query->has('configuration')) {
-            $configurationForm->submit($request);
+            $configurationForm->submit($request->get($configurationForm->getName()));
         }
 
         return $this->container->get('templating')->renderResponse($configuration->getTemplate('show.html'), [
@@ -64,8 +65,6 @@ class ReportController extends ResourceController
      */
     public function embedAction(Request $request, $report, array $configuration = [])
     {
-        $currencyProvider = $this->get('sylius.currency_provider');
-
         if (!$report instanceof ReportInterface) {
             $report = $this->getReportRepository()->findOneBy(['code' => $report]);
         }
@@ -75,7 +74,6 @@ class ReportController extends ResourceController
         }
 
         $configuration = ($request->query->has('configuration')) ? $request->query->get('configuration', $configuration) : $report->getDataFetcherConfiguration();
-        $configuration['baseCurrency'] = $currencyProvider->getBaseCurrency();
 
         $data = $this->getReportDataFetcher()->fetch($report, $configuration);
 

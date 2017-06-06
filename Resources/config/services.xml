@@ -57,7 +57,7 @@
 
         <service id="sylius.form.type.data_fetcher_choice" class="%sylius.form.type.data_fetcher_choice.class%">
             <argument>%sylius.report.data_fetchers%</argument>
-            <tag name="form.type" alias="sylius_data_fetcher_choice" />
+            <tag name="form.type" />
         </service>
 
         <service id="sylius.form.type.renderer.chart" class="%sylius.form.type.renderer.chart.class%">
@@ -72,15 +72,21 @@
 
         <service id="sylius.form.type.renderer_choice" class="%sylius.form.type.renderer_choice.class%">
             <argument>%sylius.report.renderers%</argument>
-            <tag name="form.type" alias="sylius_renderer_choice" />
+            <tag name="form.type" />
         </service>
 
         <service id="sylius.form.type.report.renderer.chart_configuration" class="%sylius.form.type.report.renderer.chart_configuration.class%">
-            <tag name="form.type" alias="sylius_renderer_chart" />
+            <tag name="form.type" />
         </service>
 
         <service id="sylius.form.type.report.renderer.table_configuration" class="%sylius.form.type.report.renderer.table_configuration.class%">
-            <tag name="form.type" alias="sylius_renderer_table" />
+            <tag name="form.type" />
+        </service>
+
+        <service id="sylius.form.type.report" class="Sylius\Bundle\ReportBundle\Form\Type\ReportType">
+            <argument>%sylius.model.report.class%</argument>
+            <argument type="collection"><argument>sylius</argument></argument>
+            <tag name="form.type" />
         </service>
 
     </services>
